@@ -12,6 +12,7 @@ export default function RootLayout({children}: { children: ReactNode }) {
             <title>CopilotKit 01</title>
          </head>
          <body>
+            <div>Example of Copilot Kit</div>
             <CopilotKit publicApiKey={process.env.COPILOTKEY_API_KEY}>
                {children}
             </CopilotKit>
