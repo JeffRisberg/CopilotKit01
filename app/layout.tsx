@@ -6,6 +6,7 @@ import "./globals.css";
 dotenv.config();
 
 export default function RootLayout({children}: { children: ReactNode }) {
+   console.log(process.env.COPILOTKEY_API_KEY);
    return (
       <html lang="en">
          <head>
