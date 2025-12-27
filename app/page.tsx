@@ -13,7 +13,7 @@ export default function Home() {
          </TasksProvider>
          <CopilotPopup
             labels={{
-               title: "CopilotKit 01",
+               title: "CopilotKit01",
             }}
          >
          </CopilotPopup>
