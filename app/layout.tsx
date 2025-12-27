@@ -1,19 +1,20 @@
 import {ReactNode} from "react";
-import dotenv from 'dotenv';
 import {CopilotKit} from "@copilotkit/react-core";
 import "./globals.css";
 
-dotenv.config();
 
 export default function RootLayout({children}: { children: ReactNode }) {
    return (
       <html lang="en">
          <head>
-            <title>CopilotKit 01</title>
+            <title>CopilotKit01</title>
          </head>
          <body>
             <div>Example of CopilotKit</div>
-            <CopilotKit publicApiKey={process.env.COPILOTKEY_API_KEY}>
+            <CopilotKit
+               runtimeUrl="/api/copilotkit"
+               showDevConsole={false}
+            >
                {children}
             </CopilotKit>
          </body>
