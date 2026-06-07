@@ -8,6 +8,7 @@ let nextId = defaultTasks.length + 1;
 type TasksContextType = {
    tasks: Task[];
    addTask: (title: string) => void;
+   updateTask: (id: number, title: string) => void;
    setTaskStatus: (id: number, status: TaskStatus) => void;
    deleteTask: (id: number) => void;
 };
@@ -30,6 +31,28 @@ export const TasksProvider = ({children}: { children: ReactNode }) => {
       ],
       handler: ({ title }) => {
          addTask(title);
+      },
+   });
+
+   useCopilotAction({
+      name: "updateTask",
+      description: "Updates the title of an existing task",
+      parameters: [
+         {
+            name: "id",
+            type: "number",
+            description: "The id of the task",
+            required: true,
+         },
+         {
+            name: "title",
+            type: "string",
+            description: "The new title of the task",
+            required: true,
+         },
+      ],
+      handler: ({ id, title }) => {
+         updateTask(id, title);
       },
    });
 
@@ -74,27 +97,35 @@ export const TasksProvider = ({children}: { children: ReactNode }) => {
 
    useCopilotReadable({
       description: "The state of the todo list",
-      value: JSON.stringify(tasks)
+      value: tasks
    });
 
    const addTask = (title: string) => {
-      setTasks([...tasks, {id: nextId++, title, status: TaskStatus.todo}]);
+      setTasks(prev => [...prev, {id: nextId++, title, status: TaskStatus.todo}]);
+   };
+
+   const updateTask = (id: number, title: string) => {
+      setTasks(prev =>
+         prev.map((task) =>
+            task.id === id ? {...task, title} : task
+         )
+      );
    };
 
    const setTaskStatus = (id: number, status: TaskStatus) => {
-      setTasks(
-         tasks.map((task) =>
+      setTasks(prev =>
+         prev.map((task) =>
             task.id === id ? {...task, status} : task
          )
       );
    };
 
    const deleteTask = (id: number) => {
-      setTasks(tasks.filter((task) => task.id !== id));
+      setTasks(prev => prev.filter((task) => task.id !== id));
    };
 
    return (
-      <TasksContext.Provider value={{tasks, addTask, setTaskStatus, deleteTask}}>
+      <TasksContext.Provider value={{tasks, addTask, updateTask, setTaskStatus, deleteTask}}>
          {children}
       </TasksContext.Provider>
    );
